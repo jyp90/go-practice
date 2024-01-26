@@ -2,6 +2,7 @@ package banking
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -32,10 +33,21 @@ func (a *BankAccount) Withdraw(amount int) error {
 		balance := strconv.Itoa(a.balance)
 		message := "Cannot withdraw your balance is " + balance
 		return errors.New(message)
+		// return errNoMoney
 	}
 
 	a.balance -= amount
 	return nil
 }
 
+// Change owner of the account
+func (a *BankAccount) ChangeOwner(newOwner string) {
+	a.owner = newOwner
+}
+
+func (a BankAccount) String() string {
+	return fmt.Sprint(a.Owner(), "'s account. \nHas : ", a.Balance())
+}
+
+// Error
 var errNoMoney = errors.New("")
