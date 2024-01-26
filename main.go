@@ -2,21 +2,17 @@ package main
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/jyp90/practice/src/banking"
+	mydict "github.com/jyp90/practice/dict"
 )
 
 func main() {
-	account := banking.NewAccount("jypark")
-	account.Deposit(10000)
-	account.Deposit(10000)
-	account.Deposit(10000)
-	fmt.Println(account.Balance())
-	account.Withdraw(5000)
-	err := account.Withdraw(40000)
+	dictionary := mydict.Dictionary{"first": "FirstWord"}
+	definition, err := dictionary.Search("second")
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+	} else {
+		fmt.Println(definition)
 	}
-	fmt.Println(account.Balance())
+
 }
