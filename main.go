@@ -1,22 +1,47 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-
-	mydict "github.com/jyp90/practice/dict"
+	"net/http"
 )
 
 func main() {
-	dictionary := mydict.Dictionary{}
-	word := "hello"
-	baseWord := "First"
-	dictionary.Add(word, baseWord)
-	fmt.Println("Base Word: ", baseWord)
-	err2 := dictionary.Update(word, "Second")
-	if err2 != nil {
-		fmt.Println(err2)
+	var results = make(map[string]string)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://www.google.com/",
+		"https://soundcloud.com/",
+		"https://www.facebook.com/",
+		"https://www.instagram.com/",
+		"https://academy.nomadcoders.co/",
 	}
-	dictionary.Delete(word)
-	word2, _ := dictionary.Search(word)
-	fmt.Println("After Update: ", word2)
+
+	for _, url := range urls {
+		result := "OK"
+
+		err := hitURL(url)
+		if err != nil {
+			result = "Fail"
+		}
+		results[url] = result
+	}
+
+	for url, result := range results {
+		fmt.Println(url, result)
+	}
 }
+
+func hitURL(url string) error {
+	fmt.Println("Checking:", url)
+	resp, err := http.Get(url)
+	if err != nil || resp.StatusCode >= 400 {
+		return errRequestFailed
+	}
+	return nil
+}
+
+var errRequestFailed = errors.New("Request failed")
