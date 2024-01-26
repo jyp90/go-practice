@@ -45,6 +45,10 @@ func (a *BankAccount) ChangeOwner(newOwner string) {
 	a.owner = newOwner
 }
 
+func (a *BankAccount) Owner() string {
+	return a.owner
+}
+
 func (a BankAccount) String() string {
 	return fmt.Sprint(a.Owner(), "'s account. \nHas : ", a.Balance())
 }
