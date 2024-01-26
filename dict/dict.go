@@ -27,6 +27,24 @@ func (d Dictionary) Add(word, def string) error {
 	return nil
 }
 
+// Update a word with a definition
+func (d Dictionary) Update(word, definition string) error {
+	_, err := d.Search(word)
+	switch err {
+	case nil:
+		d[word] = definition
+	case errNotFound:
+		return errCantUpdate
+	}
+	return nil
+}
+
+// Delete a word in Dictionary
+func (d Dictionary) Delete(word string) {
+	delete(d, word)
+}
+
 // errors
 var errNotFound = errors.New("err: Not Found")
+var errCantUpdate = errors.New("Cannot update non-exisiting word")
 var errWordExists = errors.New("err: That word already exists")

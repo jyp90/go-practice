@@ -9,16 +9,14 @@ import (
 func main() {
 	dictionary := mydict.Dictionary{}
 	word := "hello"
-	definition := "Greeting"
-	err := dictionary.Add(word, definition)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	hello, _ := dictionary.Search(word)
-	fmt.Println(hello)
-	err2 := dictionary.Add(word, definition)
+	baseWord := "First"
+	dictionary.Add(word, baseWord)
+	fmt.Println("Base Word: ", baseWord)
+	err2 := dictionary.Update(word, "Second")
 	if err2 != nil {
 		fmt.Println(err2)
 	}
+	dictionary.Delete(word)
+	word2, _ := dictionary.Search(word)
+	fmt.Println("After Update: ", word2)
 }
