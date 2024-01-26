@@ -15,4 +15,18 @@ func (d Dictionary) Search(word string) (string, error) {
 	return "", errNotFound
 }
 
+// Add a word to the dictionary
+func (d Dictionary) Add(word, def string) error {
+	_, err := d.Search(word)
+	switch err {
+	case errNotFound:
+		d[word] = def
+	case nil:
+		return errWordExists
+	}
+	return nil
+}
+
+// errors
 var errNotFound = errors.New("err: Not Found")
+var errWordExists = errors.New("err: That word already exists")
