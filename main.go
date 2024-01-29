@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	. "strings"
 
@@ -27,6 +29,31 @@ func main() {
 	for i := 0; i < totalPages; i++ {
 		extractedJobs := getPage(i)
 		jobs = append(jobs, extractedJobs...)
+	}
+
+	writeJobs(jobs)
+}
+
+func writeJobs(jobs []extractedJob) {
+	file, err := os.Create("jobs.csv")
+	checkErr(err)
+	utf8bom := []byte{0xEF, 0xBB, 0xBF}
+	file.Write(utf8bom) // Korean Encoding
+
+	w := csv.NewWriter(file)
+	defer w.Flush()
+
+	headers := []string{"ID", "Title", "Location", "Salary", "Summary"}
+
+	wErr := w.Write(headers)
+	checkErr(wErr)
+
+	for _, job := range jobs {
+		jobSlice := []string{
+			job.id, job.title, job.location, job.salary, job.summary,
+		}
+		jwErr := w.Write(jobSlice)
+		checkErr(jwErr)
 	}
 }
 
